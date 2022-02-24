@@ -11,9 +11,11 @@ namespace Pizza.Infrastructure
         private readonly PizzaContext _context;
         public OrderRepository(PizzaContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
 
-        public Order Add(Order order)
+        //i would use unity of work
+        public async Task Add(Order order)
         {
-            return _context.Orders.Add(order).Entity;
+            _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Order>> GetAllAsync()
@@ -22,9 +24,10 @@ namespace Pizza.Infrastructure
                 .Include(x => x.OrderItems).ToListAsync();
         }
 
-        public void Update(Order order)
+        public async Task Update(Order order)
         {
-            _context.Entry(order).State = EntityState.Modified;
+            _context.Update(order);
+            await _context.SaveChangesAsync();
         }
 
         public void Delete(Order order)

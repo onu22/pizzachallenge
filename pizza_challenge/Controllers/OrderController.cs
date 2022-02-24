@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using pizza.Domain.AggregateModel.OrderAggregate;
 using pizza_challenge.Model;
@@ -28,5 +25,25 @@ namespace pizza_challenge.Controllers
             return Ok(new OrderModel(orders).MapToOrderViewModels());
         }
 
-      }
+        [HttpPost]
+        [Route("create")]
+        public async Task<ActionResult> Create(OrderModel model)
+        {
+            //typically, i would not do this here.
+            Order order = new Order(model.CustomerId);
+
+            foreach (var item in model.OrderItemModels)
+            {
+                order.AddOrderItem(item.Price, item.PizzaId,item.PizzaName);
+            }
+
+            // i would use unity of work
+            await _orderRepository.Add(order);
+
+            return Created($"~api/order/{order.Id}", model);
+        }
+
+
+
+    }
 }

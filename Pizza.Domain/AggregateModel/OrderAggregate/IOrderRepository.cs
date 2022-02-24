@@ -8,9 +8,9 @@ namespace pizza.Domain.AggregateModel.OrderAggregate
     public interface IOrderRepository : IRepository<Order>
     {
 
-        Order Add(Order order);
+        Task Add(Order order);
 
-        void Update(Order order);
+        Task Update(Order order);
 
         Task<IEnumerable<Order>> GetAllAsync();
 
