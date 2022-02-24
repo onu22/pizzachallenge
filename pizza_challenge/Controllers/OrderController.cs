@@ -27,11 +27,10 @@ namespace pizza_challenge.Controllers
 
         [HttpPost]
         [Route("create")]
-        public async Task<ActionResult> Create(OrderModel model)
+        public async Task<ActionResult> Create(OrderCreateModel model)
         {
             //typically, i would not do this here.
             Order order = new Order(model.CustomerId);
-
             foreach (var item in model.OrderItemModels)
             {
                 order.AddOrderItem(item.Price, item.PizzaId,item.PizzaName);
@@ -40,7 +39,7 @@ namespace pizza_challenge.Controllers
             // i would use unity of work
             await _orderRepository.Add(order);
 
-            return Created($"~api/order/{order.Id}", model);
+            return Created($"/api/v1/Order/{order.Id}", model);
         }
 
 

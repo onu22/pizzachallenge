@@ -4,6 +4,17 @@ using pizza.Domain.AggregateModel.OrderAggregate;
 
 namespace pizza_challenge.Model
 {
+
+    public class OrderCreateModel
+    {
+        public int CustomerId { get; set; }
+        public List<OrderItemModel> OrderItemModels { get; set; }
+        public OrderCreateModel()
+        {
+            OrderItemModels = new List<OrderItemModel>();
+        }
+
+    }
     public class OrderModel
     {
         public int OrderId { get; set; }
